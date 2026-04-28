@@ -2,80 +2,96 @@
 
 ## Overview
 
-This project simulates a Security Operations Center (SOC) workflow by detecting and analyzing network-based attacks using Suricata IDS.
+This project simulates real-world Security Operations Center (SOC) workflows by detecting, analyzing, and reporting network and host-based attacks.
 
-The lab demonstrates how an attacker performs reconnaissance and how a defender detects, analyzes, and reports the activity.
-
----
-
-## Scenario: Port Scan Detection
-
-A TCP SYN scan was performed using Nmap from an attacker machine targeting a victim system.
-
-The activity was detected using a custom Suricata rule.
+The lab demonstrates both attacker techniques and defensive monitoring using Suricata IDS and system logs.
 
 ---
 
-## Lab Setup
+## Lab Environment
 
-- Attacker: Kali Linux
-- Target: Ubuntu
-- IDS: Suricata
-- Network: Internal VM network
-
----
-
-## Detection Workflow
-
-1. Attack simulation using Nmap  
-2. Packet capture and analysis via Suricata  
-3. Custom rule creation for SYN detection  
-4. Log analysis using fast.log  
-5. Incident reporting  
+- **Attacker:** Kali Linux (192.168.100.5)
+- **Target:** Ubuntu Server (192.168.100.4)
+- **Tools:** Suricata, Nmap, Hydra
+- **Logs:** Suricata (fast.log), Linux auth.log
 
 ---
 
-## Key Features
+## Scenarios Implemented
 
-- Custom Suricata rule for SYN scan detection  
-- Real-time alert monitoring  
-- Log-based threat analysis  
-- SOC-style incident report  
+### 1. Port Scan Detection (Network-Based)
 
----
+- Attack: Nmap TCP SYN Scan
+- Detection: Custom Suricata rule
+- Evidence: Packet-level alerts
 
-## Evidence
+📸 Nmap Scan  
+![Nmap](assets/nmap-scan.png)
 
-### Nmap Scan
-![Scan](assets/nmap-scan.png)
-
-### Suricata Alerts
+📸 Suricata Detection  
 ![Alerts](assets/syn-alerts.png)
+
+---
+
+### 2. SSH Brute Force Attack (Host-Based)
+
+- Attack: Hydra password brute force
+- Detection: Authentication logs
+- Result: Successful account compromise
+
+📸 Hydra Attack  
+![Hydra](assets/hydra-attack.png)
+
+📸 Auth Logs  
+![Auth](assets/auth-log-bruteforce.png)
+
+---
+
+## Detection Approach
+
+This project demonstrates two key detection strategies:
+
+- **Network-based detection** (Suricata IDS)
+- **Host-based detection** (Linux authentication logs)
+
+It also highlights limitations of default IDS rules and the need for custom detection tuning.
 
 ---
 
 ## Project Structure
 
 SOC-Detection-Lab/
-├── lab-setup/
-├── configs/
-├── logs/
-├── attacks/
-├── reports/
-└── assets/
+├── attacks/ # Attack execution documentation
+├── logs/ # Log analysis
+├── reports/ # Incident reports
+├── assets/ # Screenshots (evidence)
+├── configs/ # IDS rules/configs
+└── lab-setup/ # Environment setup
 
 ---
 
 ## Skills Demonstrated
 
-- Network traffic analysis  
-- Intrusion detection (IDS)  
-- Threat detection engineering  
-- Incident analysis and reporting  
-- Blue team fundamentals  
+- Intrusion Detection (IDS)
+- Network Traffic Analysis
+- Log Analysis (auth.log, Suricata)
+- Threat Detection & Investigation
+- Incident Reporting (SOC workflow)
+- Understanding attacker techniques (Nmap, Hydra)
+
+---
+
+## Key Takeaways
+
+- Default IDS rules may not detect all attack patterns
+- Custom detection rules improve visibility
+- Authentication logs are critical for detecting credential attacks
+- Weak passwords lead to account compromise
 
 ---
 
 ## Conclusion
 
-This project demonstrates practical blue team capabilities, including detection of reconnaissance activity, log analysis, and structured incident reporting.
+This lab demonstrates end-to-end SOC capabilities, from attack simulation to detection, analysis, and reporting.
+
+It reflects practical blue team skills required in real-world security operations environments.
