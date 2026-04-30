@@ -2,9 +2,9 @@
 
 ## Overview
 
-This project simulates real-world Security Operations Center (SOC) workflows by detecting, analyzing, and reporting network and host-based attacks.
+This project simulates real-world Security Operations Center (SOC) workflows by detecting, analyzing, and reporting security events across network, host, and web layers.
 
-The lab demonstrates both attacker techniques and defensive monitoring using Suricata IDS and system logs.
+It demonstrates how attackers perform reconnaissance and credential attacks, and how defenders detect and investigate these activities using Suricata IDS and system logs.
 
 ---
 
@@ -12,8 +12,12 @@ The lab demonstrates both attacker techniques and defensive monitoring using Sur
 
 - **Attacker:** Kali Linux (192.168.100.5)
 - **Target:** Ubuntu Server (192.168.100.4)
-- **Tools:** Suricata, Nmap, Hydra
-- **Logs:** Suricata (fast.log), Linux auth.log
+- **Services:** SSH, Apache Web Server
+- **Tools:** Suricata, Nmap, Hydra, Gobuster
+- **Logs:**
+  - Network: `/var/log/suricata/fast.log`
+  - Host: `/var/log/auth.log`
+  - Web: `/var/log/apache2/access.log`
 
 ---
 
@@ -21,9 +25,9 @@ The lab demonstrates both attacker techniques and defensive monitoring using Sur
 
 ### 1. Port Scan Detection (Network-Based)
 
-- Attack: Nmap TCP SYN Scan
-- Detection: Custom Suricata rule
-- Evidence: Packet-level alerts
+- **Attack:** Nmap TCP SYN Scan  
+- **Detection:** Custom Suricata rule  
+- **Insight:** Default rules failed → custom rule improved visibility  
 
 📸 Nmap Scan  
 ![Nmap](assets/nmap-scan.png)
@@ -35,9 +39,9 @@ The lab demonstrates both attacker techniques and defensive monitoring using Sur
 
 ### 2. SSH Brute Force Attack (Host-Based)
 
-- Attack: Hydra password brute force
-- Detection: Authentication logs
-- Result: Successful account compromise
+- **Attack:** Hydra password brute force  
+- **Detection:** Authentication logs (`auth.log`)  
+- **Result:** Successful credential compromise  
 
 📸 Hydra Attack  
 ![Hydra](assets/hydra-attack.png)
@@ -47,14 +51,31 @@ The lab demonstrates both attacker techniques and defensive monitoring using Sur
 
 ---
 
+### 3. Web Enumeration Attack (Application Layer)
+
+- **Attack:** Gobuster directory brute force  
+- **Detection:** Apache access logs  
+- **Result:** Discovery of hidden directories (`/admin`, `/backup`)  
+
+📸 Gobuster Scan  
+![Gobuster](assets/gobuster-attack.png)
+
+📸 Apache Logs  
+![Logs](assets/apache-enum-logs.png)
+
+---
+
 ## Detection Approach
 
-This project demonstrates two key detection strategies:
+This project demonstrates layered detection:
 
-- **Network-based detection** (Suricata IDS)
-- **Host-based detection** (Linux authentication logs)
+- **Network-level:** Suricata IDS for packet analysis  
+- **Host-level:** Authentication log monitoring  
+- **Application-level:** Web access log analysis  
 
-It also highlights limitations of default IDS rules and the need for custom detection tuning.
+It also highlights a key reality:
+
+> Detection is not tool-dependent — it requires understanding behavior patterns across multiple data sources.
 
 ---
 
@@ -65,33 +86,39 @@ SOC-Detection-Lab/
 ├── logs/ # Log analysis
 ├── reports/ # Incident reports
 ├── assets/ # Screenshots (evidence)
-├── configs/ # IDS rules/configs
+├── configs/ # IDS rules/configuration
 └── lab-setup/ # Environment setup
 
 ---
 
 ## Skills Demonstrated
 
-- Intrusion Detection (IDS)
+- Intrusion Detection (Suricata IDS)
 - Network Traffic Analysis
-- Log Analysis (auth.log, Suricata)
+- Log Analysis (auth.log, access.log, fast.log)
 - Threat Detection & Investigation
 - Incident Reporting (SOC workflow)
-- Understanding attacker techniques (Nmap, Hydra)
+- Understanding attacker techniques (Nmap, Hydra, Gobuster)
 
 ---
 
 ## Key Takeaways
 
-- Default IDS rules may not detect all attack patterns
-- Custom detection rules improve visibility
-- Authentication logs are critical for detecting credential attacks
-- Weak passwords lead to account compromise
+- Default IDS rules may miss real attack patterns  
+- Custom detection improves visibility  
+- Authentication logs are critical for detecting brute-force attacks  
+- Web logs reveal reconnaissance behavior  
+- Weak credentials lead to account compromise  
 
 ---
 
 ## Conclusion
 
-This lab demonstrates end-to-end SOC capabilities, from attack simulation to detection, analysis, and reporting.
+This project demonstrates end-to-end SOC capabilities:
 
-It reflects practical blue team skills required in real-world security operations environments.
+- Attack simulation  
+- Detection engineering  
+- Log analysis  
+- Incident reporting  
+
+It reflects practical blue team skills aligned with real-world security operations.
